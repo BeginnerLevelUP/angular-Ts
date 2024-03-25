@@ -1,0 +1,20 @@
+
+#footer-shop{
+    margin:2.5em
+}
+#footer-shop,#footer-shop aside section{
+    display:flex;
+    justify-content:space-evenly;
+}
+
+#footer-shop nav{
+    display: flex;
+    flex-direction: column;
+}
+.footer-contact input,textarea{
+    display:block;
+    margin:1em;
+    border-radius:8px;
+    resize:none;
+}
+
