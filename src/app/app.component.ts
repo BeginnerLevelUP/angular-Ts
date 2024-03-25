@@ -9,10 +9,28 @@ import { HomeComponent } from './home/home.component';
   standalone: true,
   imports: [RouterOutlet,HeaderComponent,FooterComponent,HomeComponent],
   template:`
-  <app-header></app-header>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping</title>
+</head>
+<body>
+   <header>
+      <app-header></app-header>
+  </header>
+  <main>
   <router-outlet></router-outlet>
-  <app-footer></app-footer>
-  `,
+</main>
+
+  <footer>
+      <app-footer></app-footer>
+  </footer>   
+</body>
+</html>
+  `
+,
   styleUrl: './app.component.css'
 })
 export class AppComponent {
