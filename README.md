@@ -104,5 +104,7 @@ In Angular 17 everything is now standalone meaning nothing relies on the ngmodul
 
 By adding  `-- standalone false` you are essentially reverting to a pervison version of how angular operates. Now that component must have module associated with it. To create a module `ng generate module <name>` or `ng g m <name>`. This will create folder of the same name with one file move that file to app folder and now create your dependent component.
 
+Adding `--flat` will create the 4files just without its own folder
+
 If you want all your components to be modular you can go to the angular.json and config it to do so
 ![standalone](./readmeFiles/standalone.png)
