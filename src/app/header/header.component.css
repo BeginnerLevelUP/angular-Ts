@@ -1,5 +1,27 @@
-#header-nav{
+#header{
     display:flex;
     justify-content:space-between;
     padding : 2em
+}
+
+.header-nav a{
+    border:1px solid black;
+    margin:0 .5em;
+    padding:0.5em;
+    border-radius:8px;
+}
+
+.header-nav a:hover {
+background-color:black;
+}
+
+.searchBar input{
+    border-radius:8px;
+}
+
+.options { 
+    margin:0 3.5em;
+}
+.options a{
+    margin:0 .5em
 }
