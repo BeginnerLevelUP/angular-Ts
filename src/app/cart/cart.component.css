@@ -1,0 +1,35 @@
+.cart-header{
+    display:flex;
+    justify-content:center;
+}
+.cart-header h1{
+    font-weight:900;
+    margin:0 .5em
+}
+
+.spacer{
+    border-left:1px solid black;
+}
+.cart-body{
+    text-align:center;
+    padding:2em;
+    display:flex;
+    justify-content:space-between;
+}
+.cart-body h2{
+    border-bottom: 1px solid black;
+        font-weight:900;
+}
+
+.item{
+    display:flex;
+}
+.item span p {
+    display:inline;
+    border-right:1px black solid;
+    padding:0 0.5em;
+}
+.item button{
+    display:block;
+    margin:0.5em auto
+}
