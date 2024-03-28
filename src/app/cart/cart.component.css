@@ -2,11 +2,7 @@
     display:flex;
     justify-content:center;
 }
-.cart-header h1{
-    font-weight:900;
-    margin:0 .5em
-}
-
+ 
 .spacer{
     border-left:1px solid black;
 }
