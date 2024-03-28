@@ -1,0 +1,14 @@
+:host {
+    --primary: #E5E8B6;
+    --secondary: #E5E8B6;
+    --accent: #673ab7;
+    --textColor: #4DA1A9;
+    --backgroundColor: white;
+    --regFont: 'Montserrat', sans-serif;
+    --headFont: 'Bebas Neue', sans-serif;
+    --listFont: 'Lato', sans-serif;
+}
+
+body{
+    background-color: var(--backgroundColor);
+}

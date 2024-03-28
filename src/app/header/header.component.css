@@ -9,10 +9,19 @@
     margin:0 .5em;
     padding:0.5em;
     border-radius:8px;
+    background-color: var(--accent);
+    transition: .5s;
+    color:white;
+    text-decoration:none;
+}
+#header h1{
+color:var(--primary);
+font-size:4em;
+font-weight: 600;
 }
 
 .header-nav a:hover {
-background-color:black;
+background-color:var(--secondary);
 }
 
 .searchBar input{
