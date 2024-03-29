@@ -1,4 +1,7 @@
 
+#footer{
+    padding:3em
+}
 #footer-shop{
     margin:2.5em
 }
@@ -9,12 +12,29 @@
 
 #footer-shop nav{
     display: flex;
-    flex-direction: column;
+    justify-content:space-between;
 }
+#footer-shop li {
+list-style-type: none;
+margin:1em 0;
+}
+#footer-shop a{
+    margin:0 2em
+}
+
 .footer-contact input,textarea{
     display:block;
     margin:1em;
     border-radius:8px;
     resize:none;
 }
+.footer-contact label{
+    font-weight:800;
+}
+.brand-message{
+    display:flex;
+}
 
+.brand-message h2{
+    margin:4em 2em
+}

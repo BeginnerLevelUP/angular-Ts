@@ -1,6 +1,6 @@
 .favorite-header {
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
 }
 
 .favorite-header h1 {
