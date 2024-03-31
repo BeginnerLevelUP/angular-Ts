@@ -1,9 +1,9 @@
 :host {
-    --primary: #E5E8B6;
-    --secondary: #E5E8B6;
+    --primary: #1d1128;
+    --secondary: #6d72c3;
     --accent: #673ab7;
-    --textColor: #4DA1A9;
-    --backgroundColor: white;
+    --textColor: #e5d4ed;
+    --backgroundColor: #514f59;
     --regFont: 'Montserrat', sans-serif;
     --headFont: 'Bebas Neue', sans-serif;
     --listFont: 'Lato', sans-serif;
