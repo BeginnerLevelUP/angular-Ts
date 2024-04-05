@@ -4,6 +4,7 @@ import { CartComponent } from './cart/cart.component';
 import { SettingsComponent } from './settings/settings.component';
 import { CatalogComponent } from './catalog/catalog.component';
 import { FavoriteComponent } from './favorite/favorite.component';
+import { AuthenticateComponent } from './authenticate/authenticate.component';
 export const routes: Routes = [
     {
         path:'',
@@ -29,14 +30,10 @@ export const routes: Routes = [
     path:'favortie',
     component:FavoriteComponent,
     title:"Favorites"
-    }
-    // example for items page
-   /* 
-   {
-    //for category
-    path:'item/shirt
-    //for item
-    path:item/shirt/1
-    }
-    */
+    },{
+    path:'signup',
+    component:AuthenticateComponent,
+    title:"Authenticate"
+    }   
+
 ];

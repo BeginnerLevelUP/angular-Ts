@@ -1,7 +1,7 @@
 import * as express from "express";
 import { ObjectId } from "mongodb";
 import { collections } from "./database";
-
+import * as bcrypt from "bcrypt";
 export const userRouter = express.Router();
 userRouter.use(express.json());
 
@@ -32,7 +32,21 @@ userRouter.get("/:id", async (req, res) => {
 
 userRouter.post("/", async (req, res) => {
     try {
-        const user = req.body;
+        const { _id,username, password,lastName,firstName,email } = req.body;
+
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Create the user object with the hashed password
+        const user = {
+            _id:_id,
+            username: username,
+            password: hashedPassword,
+            lastName:lastName,
+            firstName:firstName,
+            email:email
+        };
+
         const result = await collections?.users?.insertOne(user);
 
         if (result?.acknowledged) {

@@ -23,22 +23,24 @@ async function applySchemaValidation(db: mongodb.Db) {
         $jsonSchema: {
             bsonType: "object",
             required: ["username", "email", "password"],
-            additionalProperties: false,
+            additionalProperties: true,
             properties: {
                 _id: {},
-                name: {
+                username: {
                     bsonType: "string",
                     description: "'username' is required and is a string",
                 },
-                position: {
+                email: {
                     bsonType: "string",
                     description: "'email' is required and is a string",
                     minLength: 5
                 },
-                level: {
+                password: {
                     bsonType: "string",
                     description: "'password' is required and is one of 'junior', 'mid', or 'senior'",
                 },
+                firstName:{},
+                LastName:{},
             },
         },
     };

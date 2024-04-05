@@ -35,7 +35,7 @@ export class AddUserComponent {
         this.router.navigate(['/']);
       },
       error: (error) => {
-        alert('Failed to create employee');
+        alert('Failed to create user');
         console.error(error);
       },
     });
