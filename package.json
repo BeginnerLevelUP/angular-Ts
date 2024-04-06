@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "cd ./src && nodemon server.ts",
-    "develop": "concurrently \"cd server && npm run watch\" \"cd client && ng serve -o\"",
+    "dev": "concurrently \"cd server && npm run watch\" \"cd client && ng serve -o\"",
     "install": "cd server && npm i && cd ../client && npm i",
     "seed": "cd server && npm run seed",
     "build": "cd client && npm run build"
