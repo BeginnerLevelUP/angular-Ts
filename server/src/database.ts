@@ -39,8 +39,6 @@ async function applySchemaValidation(db: mongodb.Db) {
                     bsonType: "string",
                     description: "'password' is required and is one of 'junior', 'mid', or 'senior'",
                 },
-                firstName:{},
-                LastName:{},
             },
         },
     };
