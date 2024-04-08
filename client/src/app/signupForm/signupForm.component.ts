@@ -17,7 +17,7 @@ import { User } from '../user';
 import { Dialog } from '@angular/cdk/dialog';
 
 @Component({
-  selector: 'app-user-form',
+  selector: 'app-signup-form',
   standalone: true,
   imports: [
     ReactiveFormsModule,
@@ -58,26 +58,18 @@ import { Dialog } from '@angular/cdk/dialog';
     </button>
 </form>
 
-<a (click)="openDialog('0ms', '0ms')" >Login In</a>
+
 
   `,
   styles:`
-  form{
-    display:flex;
-    flex-direction:column;
-  }
-  
+form{
+  display:flex;
+  flex-direction:column;
+  justify-content:center
+}
   `
 })
-export class UserFormComponent {
-
-  openDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
-    this.dialog.open(Dialoge, {
-      width: '250px',
-      enterAnimationDuration,
-      exitAnimationDuration,
-    });
-  }
+export class signupFormComponent {
 
 initialState=input<User>()
 
@@ -119,22 +111,3 @@ submitForm(){
 }
 }
 
-
-@Component({
-  selector: 'Dialoge',
-  template: `
-  <h2 mat-dialog-title>Login </h2>
-<mat-dialog-content>
-Log Back In To Continue Shopping
-</mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-button mat-dialog-close>No</button>
-  <button mat-button mat-dialog-close cdkFocusInitial>Ok</button>
-</mat-dialog-actions>
-  `,
-  standalone: true,
-  imports: [MatButtonModule, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent],
-})
-export class Dialoge {
-  constructor(public dialogRef: MatDialogRef<Dialoge>) {}
-}

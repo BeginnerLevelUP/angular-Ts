@@ -1,9 +1,0 @@
-.favorite-header {
-    display: flex;
-    justify-content: space-evenly;
-}
-
-.favorite-header h1 {
-    font-weight: 900;
-    margin: 0 .5em
-}

@@ -1,31 +1,46 @@
-import * as express from "express";
+import express, { Request, Response } from "express";
 import { ObjectId } from "mongodb";
 import { collections } from "./database";
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken"
+import auth from "./auth";
 export const authRouter = express.Router();
-authRouter.use(express.json());
 
 
-authRouter.post("/auth/register",async(req,res)=>{
+authRouter.post("/auth/register", async (req, res) => {
     try {
-        const { _id,username, password,email } = req.body;
+        const { _id, username, password, email } = req.body;
 
         // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Create the user object with the hashed password
         const user = {
-            _id:_id,
-            username: "pdffadfasfsapjf",
+            _id: _id,
+            username: username,
             password: hashedPassword,
-            email:email
+            email: email
         };
 
         const result = await collections?.users?.insertOne(user);
 
         if (result?.acknowledged) {
-            res.status(201).send(`Created a new user: ID ${result.insertedId}.`);
+            // Check if result is defined before using it
+            const insertedId = result.insertedId;
+
+            // Make sure to check if insertedId is not null or undefined
+            if (insertedId) {
+                // Assuming result is of type InsertOneResult<User> and insertedId is of type ObjectId
+                const token = auth.signToken({
+                    _id: insertedId.toString(),
+                    username: username,
+                    email: email
+                });
+                console.log(token)
+                res.status(201).json(token);
+            } else {
+                res.status(500).send("Failed to create a new user: No inserted ID.");
+            }
         } else {
             res.status(500).send("Failed to create a new user.");
         }
@@ -33,7 +48,9 @@ authRouter.post("/auth/register",async(req,res)=>{
         console.error(error);
         res.status(400).send(error instanceof Error ? error.message : "Unknown error");
     }
-})
+});
+
+
 
 authRouter.post('/auth/login', async (req, res) => {
     try {
@@ -48,17 +65,20 @@ authRouter.post('/auth/login', async (req, res) => {
             return res.status(401).json({ error: 'Authentication failed' });
         }
 
-        const token = jwt.sign({ userId: user._id }, 'your-secret-key', { expiresIn: '1h' });
+        // Generate a JWT token upon successful authentication
+        const token = auth.signToken({
+            _id: user._id.toString(),
+            email: user.email,
+            username: user.username
+        });
 
-        // Set the token as a response header
-        res.setHeader('Authorization', `Bearer ${token}`);
-
-        // Send the response with user ID in the body
-        res.status(201).send(`Found User with the ID: ${user?._id}`);
+        // Send the response with the JWT token
+        res.status(200).json(token );
     } catch (error) {
         console.error(error);
         res.status(400).send(error instanceof Error ? error.message : "Unknown error");
     }
 });
+
 
 export default authRouter;

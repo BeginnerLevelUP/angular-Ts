@@ -9,7 +9,7 @@ export async function connectToDatabase(uri: string) {
     const client = new mongodb.MongoClient(uri);
     await client.connect();
 
-    const db = client.db("users");
+    const db = client.db("shoeStoreDatabase");
     await applySchemaValidation(db);
 
     const usersCollection = db.collection<User>("users");
@@ -49,7 +49,7 @@ async function applySchemaValidation(db: mongodb.Db) {
         validator: jsonSchema
     }).catch(async (error: mongodb.MongoServerError) => {
         if (error.codeName === "NamespaceNotFound") {
-            await db.createCollection("shoeStoreDatabase", {validator: jsonSchema});
+            await db.createCollection("users", {validator: jsonSchema});
         }
     });
 }
