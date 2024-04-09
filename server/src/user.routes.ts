@@ -1,56 +1,46 @@
-import * as express from "express";
+import express, { Request, Response } from "express";
 import { ObjectId } from "mongodb";
 import { collections } from "./database";
 import * as bcrypt from "bcrypt";
-export const userRouter = express.Router();
-userRouter.use(express.json());
+import * as jwt from "jsonwebtoken"
+import auth from "./auth";
+export const authRouter = express.Router();
 
-userRouter.get("/", async (_req, res) => {
+
+authRouter.post("/auth/register", async (req, res) => {
     try {
-        const users = await collections?.users?.find({}).toArray();
-        res.status(200).send(users);
-    } catch (error) {
-        res.status(500).send(error instanceof Error ? error.message : "Unknown error");
-    }
-});
-
-userRouter.get("/:id", async (req, res) => {
-    try {
-        const id = req?.params?.id;
-        const query = { _id: new ObjectId(id) };
-        const user = await collections?.users?.findOne(query);
-
-        if (user) {
-            res.status(200).send(user);
-        } else {
-            res.status(404).send(`Failed to find a user: ID ${id}`);
-        }
-    } catch (error) {
-        res.status(404).send(`Failed to find a user: ID ${req?.params?.id}`);
-    }
-});
-
-userRouter.post("/", async (req, res) => {
-    try {
-        const { _id,username, password,lastName,firstName,email } = req.body;
+        const { _id, username, password, email } = req.body;
 
         // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Create the user object with the hashed password
         const user = {
-            _id:_id,
+            _id: _id,
             username: username,
             password: hashedPassword,
-            lastName:lastName,
-            firstName:firstName,
-            email:email
+            email: email
         };
 
         const result = await collections?.users?.insertOne(user);
 
         if (result?.acknowledged) {
-            res.status(201).send(`Created a new user: ID ${result.insertedId}.`);
+            // Check if result is defined before using it
+            const insertedId = result.insertedId;
+
+            // Make sure to check if insertedId is not null or undefined
+            if (insertedId) {
+                // Assuming result is of type InsertOneResult<User> and insertedId is of type ObjectId
+                const token = auth.signToken({
+                    _id: insertedId.toString(),
+                    username: username,
+                    email: email
+                });
+                console.log(token)
+                res.status(201).json(token);
+            } else {
+                res.status(500).send("Failed to create a new user: No inserted ID.");
+            }
         } else {
             res.status(500).send("Failed to create a new user.");
         }
@@ -60,45 +50,35 @@ userRouter.post("/", async (req, res) => {
     }
 });
 
-userRouter.put("/:id", async (req, res) => {
-    try {
-        const id = req?.params?.id;
-        const user = req.body;
-        const query = { _id: new ObjectId(id) };
-        const result = await collections?.users?.updateOne(query, { $set: user });
 
-        if (result && result.matchedCount) {
-            res.status(200).send(`Updated a user: ID ${id}.`);
-        } else if (!result?.matchedCount) {
-            res.status(404).send(`Failed to find a user: ID ${id}`);
-        } else {
-            res.status(304).send(`Failed to update a user: ID ${id}`);
+
+authRouter.post('/auth/login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = await collections?.users?.findOne({ email: email });
+        if (!user) {
+            return res.status(401).json({ error: 'User Not Found' });
         }
+
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        if (!passwordMatch) {
+            return res.status(401).json({ error: 'Authentication failed' });
+        }
+
+        // Generate a JWT token upon successful authentication
+        const token = auth.signToken({
+            _id: user._id.toString(),
+            email: user.email,
+            username: user.username
+        });
+
+        // Send the response with the JWT token
+        res.status(200).json(token );
     } catch (error) {
-        const message = error instanceof Error ? error.message : "Unknown error";
-        console.error(message);
-        res.status(400).send(message);
+        console.error(error);
+        res.status(400).send(error instanceof Error ? error.message : "Unknown error");
     }
 });
 
-userRouter.delete("/:id", async (req, res) => {
-    try {
-        const id = req?.params?.id;
-        const query = { _id: new ObjectId(id) };
-        const result = await collections?.users?.deleteOne(query);
 
-        if (result && result.deletedCount) {
-            res.status(202).send(`Removed a user: ID ${id}`);
-        } else if (!result) {
-            res.status(400).send(`Failed to remove a user: ID ${id}`);
-        } else if (!result.deletedCount) {
-            res.status(404).send(`Failed to find a user: ID ${id}`);
-        }
-    } catch (error) {
-        const message = error instanceof Error ? error.message : "Unknown error";
-        console.error(message);
-        res.status(400).send(message);
-    }
-});
-
-export default userRouter;
+export default authRouter;
