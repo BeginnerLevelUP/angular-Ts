@@ -12,8 +12,12 @@ async function fetchShoes(): Promise<Product[]> {
     const API_URL = "https://api.escuelajs.co/api/v1/products";
     try {
         const response = await fetch(API_URL);
-        const data = await response.json();
-        return data as Product[];
+        const data:any = await response.json();
+        const productsWithQuantity = data.map((product: Product) => ({
+            ...product,
+            quantity: 50
+        }));
+        return productsWithQuantity as Product[];
     } catch (error) {
         error instanceof Error ? error.message : "Unknown error";
         return [];
