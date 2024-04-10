@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { connectToDatabase } from "./database";
 import userRouter from "./user.routes";
+import { productRouter } from "./product.routes";
 import auth from "./auth";
 // Load environment variables from the .env file, where the ATLAS_URI is configured
 dotenv.config();
@@ -23,7 +24,7 @@ connectToDatabase(ATLAS_URI)
     app.use(cors());
     app.use('/profile',auth.authMiddleware)
     app.use("/api/", userRouter);
-    
+    app.use("/api/", productRouter);
     // start the Express server
     app.listen(5200, () => {
       console.log(`Server running at http://localhost:5200...`);

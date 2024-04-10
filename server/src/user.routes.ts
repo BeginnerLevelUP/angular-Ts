@@ -10,7 +10,6 @@ export const authRouter = express.Router();
 authRouter.post("/auth/register", async (req, res) => {
     try {
         const { _id, username, password, email } = req.body;
-
         // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -45,7 +44,6 @@ authRouter.post("/auth/register", async (req, res) => {
             res.status(500).send("Failed to create a new user.");
         }
     } catch (error) {
-        console.error(error);
         res.status(400).send(error instanceof Error ? error.message : "Unknown error");
     }
 });
