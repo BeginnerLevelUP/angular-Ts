@@ -9,6 +9,6 @@
     --listFont: 'Lato', sans-serif;
 }
 
-body{
+*{
     background-color: var(--backgroundColor);
 }

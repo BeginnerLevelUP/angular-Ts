@@ -18,7 +18,7 @@ export class EcommerceService {
         this.products$.set(products);
       });
   }
-  
+
   getProducts(){
     this.refreshProducts();
     return this.products$();

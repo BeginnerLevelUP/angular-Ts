@@ -1,46 +1,60 @@
 <article id="catalog">
+<section class="example-section">
+    <span class="example-list-section">
+        <mat-checkbox class="example-margin" [checked]="allComplete" [color]="task.color"
+            [indeterminate]="someComplete()" (change)="setAll($event.checked)">
+            {{task.name}}
+        </mat-checkbox>
+    </span>
+    <span class="example-list-section">
+        <ul>
+            @for (subtask of task.subtasks; track subtask) {
+            <li>
+                <mat-checkbox [(ngModel)]="subtask.completed" [color]="subtask.color"
+                    (ngModelChange)="updateAllComplete()">
+                    {{subtask.name}}
+                </mat-checkbox>
+            </li>
+            }
+        </ul>
+    </span>
+</section>
 
-    <aside>
-    
-        <div class="filter-name">
-
-        <div>
-            <label for="New">
-                New
-            </label>
-        
-            <input type="checkbox" id="New" name="New">
-        </div>
-        
-        <div>
-            <label for="Sale">
-                Sale
-            </label>
-        
-            <input type="checkbox" id="Sale" name="Sale">
-        </div>
-        
-        <div>
-            <label for="Classics">
-                Classics
-            </label>
-        
-            <input type="checkbox" id="Classics" name="Classics">
-        </div>
-
-        </div>
-
-        <div class="filter-color">
-        <input type="color" id="head" name="head" value="#FF0000" />
-        <input type="color" id="head" name="head" value="#0000FF" />
-        <input type="color" id="head" name="head" value="#00FF00" />
-        </div>
-
-    </aside>
-
-
-    <section>
-        <h1>Render The Api Call</h1>
-    </section>
+<mat-chip-listbox aria-label="Fish selection">
+    <mat-chip-option>One fish</mat-chip-option>
+    <mat-chip-option>Two fish</mat-chip-option>
+    <mat-chip-option color="accent" selected>Accent fish</mat-chip-option>
+    <mat-chip-option color="warn">Warn fish</mat-chip-option>
+</mat-chip-listbox>
 
 </article>
+
+
+<mat-grid-list cols="2" rowHeight="1:1">
+@for (item of products$(); track item.id) {
+
+            <mat-grid-tile>
+<mat-card class="item">
+    <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>{{item.title}}</mat-card-title>
+        <mat-card-subtitle>
+            ${{item.price}}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+        <img mat-card-image src={{item.images[0]}} alt={{item.description}}>
+        <p>
+{{item.description}}
+        </p>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-button>ADD TO CART</button>
+        <button mat-button>SAVE FOR LATER</button>
+    </mat-card-actions>
+</mat-card>
+</mat-grid-tile>
+} @empty {
+<h1>There Are No Products Currently Avaiable</h1>
+}
+</mat-grid-list>
