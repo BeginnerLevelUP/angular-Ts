@@ -48,13 +48,19 @@ async function applySchemaValidation(db: mongodb.Db) {
             },
         },
     };
-    const jsonSchemaProduct = {
+const jsonSchemaProduct = {
   $jsonSchema: {
     bsonType: "object",
-    required: ["title", "price", "description", "images", "category"],
-    additionalProperties: true,
+    required: ["id", "title", "price", "description", "category", "image", "rating", "quantity"],
+    additionalProperties: false,
     properties: {
-      _id: {},
+      _id: {
+        bsonType: "objectId",
+      },
+      id: {
+        bsonType: "number",
+        description: "'id' is required and is a number",
+      },
       title: {
         bsonType: "string",
         description: "'title' is required and is a string",
@@ -68,52 +74,36 @@ async function applySchemaValidation(db: mongodb.Db) {
         bsonType: "string",
         description: "'description' is required and is a string",
       },
-      images: {
-        bsonType: "array",
-        description: "'images' is required and is an array of strings",
-        items: {
-          bsonType: "string",
-        },
-        minItems: 1,
-      },
-      creationAt: {
-        bsonType: "string",
-        description: "'creationAt' is a string representing a date",
-      },
-      updatedAt: {
-        bsonType: "string",
-        description: "'updatedAt' is a string representing a date",
-      },
       category: {
+        bsonType: "string",
+        description: "'category' is required and is a string",
+      },
+      image: {
+        bsonType: "string",
+        description: "'image' is required and is a string",
+      },
+      rating: {
         bsonType: "object",
-        description: "'category' is an object",
-        required: ["id", "name", "image"],
+        required: ["rate", "count"],
         properties: {
-          id: {
+          rate: {
             bsonType: "number",
-            description: "'id' is required and is a number",
+            description: "'rate' is required and is a number",
           },
-          name: {
-            bsonType: "string",
-            description: "'name' is required and is a string",
-          },
-          image: {
-            bsonType: "string",
-            description: "'image' is required and is a string",
-          },
-          creationAt: {
-            bsonType: "string",
-            description: "'creationAt' is a string representing a date",
-          },
-          updatedAt: {
-            bsonType: "string",
-            description: "'updatedAt' is a string representing a date",
+          count: {
+            bsonType: "number",
+            description: "'count' is required and is a number",
           },
         },
+      },
+      quantity: {
+        bsonType: "number",
+        description: "'quantity' is required and is a number",
       },
     },
   },
 };
+
  
    await db.command({
         collMod: "users",

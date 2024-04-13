@@ -1,6 +1,12 @@
-import * as mongodb from 'mongodb'
-import {Product} from "./product"
-export interface Cart{
-    items:Product[];
-    Total:Number
+
+import { ObjectId } from 'mongodb';
+
+interface CartItem {
+  productId: ObjectId;
+  quantity: number;
+  total: number;
+}
+export interface Cart {
+  items: CartItem[];
+  cartTotal: number;
 }

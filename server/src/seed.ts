@@ -9,7 +9,7 @@ const ATLAS_URI = process.env.ATLAS_URI || '';
 
 
 async function fetchShoes(): Promise<Product[]> {
-    const API_URL = "https://api.escuelajs.co/api/v1/products";
+    const API_URL = "https://fakestoreapi.com/products/";
     try {
         const response = await fetch(API_URL);
         const data:any = await response.json();
