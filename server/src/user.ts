@@ -4,6 +4,6 @@ export interface User {
     username: string;
     email: string;
     password: string;
-    _id?: mongodb.ObjectId;
+    _id: mongodb.ObjectId;
     cart:Cart
 }

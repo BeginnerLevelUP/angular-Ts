@@ -28,11 +28,6 @@ export interface Task {
 })
 export class CatalogComponent implements OnInit {
 products$={}as WritableSignal<Product[]>
-  displayedColumns: string[] = [
-    'col-name',
-    'col-position',
-    'col-level',
-  ];
 constructor(private ecommerceService:EcommerceService) {}
 ngOnInit(){
   this.fetchProducts()

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject ,signal} from '@angular/core';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
@@ -10,6 +10,7 @@ import { User } from './user';
 export class UserService {
 private readonly JWT_TOKEN = 'JWT_TOKEN';
   private loggedUser?: string;
+  user$ = signal<User>({} as User);
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   private router = inject(Router);
   private http = inject(HttpClient);
@@ -57,6 +58,14 @@ getCurrentAuthUser() {
   }
 }
 
+getUserData() {
+const payload:any=this.getCurrentAuthUser()
+this.http.get<User>(`http://localhost:5200/api/user/profile/${payload.data._id}`).subscribe(user=>{
+ this.user$.set(user)
+ return this.user$()
+ })
+
+}
 
   isLoggedIn() {
     return !!localStorage.getItem(this.JWT_TOKEN);

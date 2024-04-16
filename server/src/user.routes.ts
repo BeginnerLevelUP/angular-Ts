@@ -32,16 +32,21 @@ const updateProductQuantitiesMiddleware = async (req: Request, res: Response, ne
       if (product.quantity < item.quantity) {
         return res.status(400).json({ message: `Insufficient quantity for product ${productId}` });
       }
-        // Update the item total in the user's cart
-      const filter = { userId: user._id, "cart.items.productId": productId };
-      const update = { $set: { "cart.items.$.total": item.total } };
+// Update the item total in the user's cart
+const filter = { _id: user._id };
+const cartTotal = user.cart.items.reduce((total, item) => {
+  if (item.productId === productId) {
+    return total + (item.quantity * product.price); // Assuming product has a price field
+  }
+  return total + (item.quantity * product.price); // Or use item's price directly
+}, 0);
 
-      item.total=item.quantity*product.price
-  
-      product.quantity -= item.quantity;
+const update = { $set: { "cart.cartTotal": cartTotal } };
 
-      // Update the product in the database
-      await collections?.users?.updateOne(filter, update);
+product.quantity -= item.quantity;
+
+// Update the user's cartTotal in the database
+await collections?.users?.findOneAndUpdate(filter, update);
       await collections?.products?.updateOne({ _id: productId }, { $set: { quantity: product.quantity } });
     }
 
@@ -115,7 +120,7 @@ userRouter.put("/user/:userId/cart/:productId",updateProductQuantitiesMiddleware
         res.status(500).json({ message: "Not Enough Quant" });
       }else{
       await collections?.users?.findOneAndUpdate(queryUser, { $set: { "cart.items": user.cart.items } });
-      res.status(200).json({ message: "Product updated" });
+      res.status(200).json({ message: "Product updated",user });
       }
 
     } else {
@@ -126,6 +131,32 @@ userRouter.put("/user/:userId/cart/:productId",updateProductQuantitiesMiddleware
   }
 });
 
+userRouter.get('/user/profile/:userId',async(req: Request, res: Response, next: NextFunction)=>{
+  try{
+    const userId=req.params.userId
+    const user= await collections?.users?.findOne({_id:new ObjectId(userId)})
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+for(const item of user?.cart.items){
+    const productId = item.productId;
+    const product = await collections?.products?.findOne<Product>({ _id: productId });
+
+    if (!product) {
+        return res.status(404).json({ message: `Product with ID ${productId} not found` });
+    }
+
+    // Spread the properties of `product` into `item`
+    Object.assign(item, product);
+}    
+ user.cart.items = user.cart.items.map(item => ({ ...item }))
+    res.status(200).send(user)
+  }catch(error){
+      error instanceof Error ? error.message : "Uknow Error"
+  }
+})
 
 
-
+//instead of doing with middleware do it with pre from mongo basically database middleware
