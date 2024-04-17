@@ -29,9 +29,9 @@ const updateProductQuantitiesMiddleware = async (req: Request, res: Response, ne
       }
 
       // Check if there is enough quantity available
-      if (product.quantity < item.quantity) {
-        return res.status(400).json({ message: `Insufficient quantity for product ${productId}` });
-      }
+      // if (product.quantity < item.quantity) {
+      //   return res.status(400).json({ message: `Insufficient quantity for product ${productId}` });
+      // }
 // Update the item total in the user's cart
 const filter = { _id: user._id };
 const cartTotal = user.cart.items.reduce((total, item) => {
@@ -57,7 +57,7 @@ await collections?.users?.findOneAndUpdate(filter, update);
   }
 };
 
-userRouter.post("/user/:userId/cart/:productId",updateProductQuantitiesMiddleware, async (req:Request, res:Response, next:NextFunction) => {
+userRouter.get("/user/:userId/cart/:productId",updateProductQuantitiesMiddleware, async (req:Request, res:Response, next:NextFunction) => {
   try {
     const productId = req?.params?.productId;
     const queryProduct = { _id: new ObjectId(productId) };

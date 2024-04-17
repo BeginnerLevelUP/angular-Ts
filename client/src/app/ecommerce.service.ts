@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Product } from './product';
 import { Cart } from './cart';
+import { UserService } from './user.service';
+import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -9,7 +11,7 @@ export class EcommerceService {
   private url = 'http://localhost:5200';
   products$ = signal<Product[]>([]);
   product$ = signal<Product>({} as Product);
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient ,private userService:UserService) { }
 
 
   refreshProducts(){
@@ -29,6 +31,11 @@ export class EcommerceService {
     this.product$.set(product);
     return this.product$();
     });
+  }
+
+  addToCart(id:string):Observable<any>{
+    const user:any=this.userService.getCurrentAuthUser()
+  return  this.httpClient.get(`${this.url}/api/user/${user.data._id}/cart/${id}`)
   }
 
 }

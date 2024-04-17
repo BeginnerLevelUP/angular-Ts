@@ -1,6 +1,6 @@
 <article>
     <section class="cart-header">
-<h1>{{ user$() ? user$().username.toUpperCase()+ "'s Cart" : "Your Cart" }}</h1>
+<h1>{{ user$() ? user$().username+ "'s Cart" : "Your Cart" }}</h1>
 <svg fill="#673ab7" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
     <path
         d="M10 19.5c0 .829-.672 1.5-1.5 1.5s-1.5-.671-1.5-1.5c0-.828.672-1.5 1.5-1.5s1.5.672 1.5 1.5zm3.5-1.5c-.828 0-1.5.671-1.5 1.5s.672 1.5 1.5 1.5 1.5-.671 1.5-1.5c0-.828-.672-1.5-1.5-1.5zm-10.563-5l-2.937-7h16.812l-1.977 7h-11.898zm11.233-5h-11.162l1.259 3h9.056l.847-3zm5.635-5l-3.432 12h-12.597l.839 2h13.239l3.474-12h1.929l.743-2h-4.195z" />
@@ -12,23 +12,30 @@
     <section class="cart-body">
 
         <div class="item">
-            <img src="" alt="example">
 
-            <div class="item-info">
-                <h4>Price</h4>
-
-                <p>Description</p>
-
-                <span>
-                    <p>Color</p>
-                    <p>Size</p>
-                    <p>Quantity</p>
-                </span>
-
-            <button>Save For Later</button>
-            
-            </div>
-
+    @for (item of user$().cart?.items; track item.id) {
+    
+    <mat-card class="item">
+        <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>{{item.title}}</mat-card-title>
+            <mat-card-subtitle>
+                ${{item.price}}</mat-card-subtitle>
+        </mat-card-header>
+    
+        <mat-card-content>
+            <img mat-card-image src={{item.image}} alt={{item.description}}>
+            <p>
+                {{item.description}}
+            </p>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-button>SAVE FOR LATER</button>
+        </mat-card-actions>
+    </mat-card>
+    } @empty {
+    <h1>There Are No Products Currently Avaiable</h1>
+    }
 
 
         </div>
@@ -39,12 +46,8 @@
             <h2>Total</h2>
 
              <span> 
-                <h3>Sub-Total</h3>
+                <h3>Sub-Total : ${{user$().cart?.cartTotal}}</h3>
              </span>
-
-            <span>
-                <h3>Dilevery</h3>
-            </span>
 
             <button>Checkout</button>
         </div>
@@ -52,31 +55,3 @@
     </section>
 
 </article>
-<mat-grid-list cols="2" rowHeight="1:1">
-    @for (item of user$().cart?.items; track item.id) {
-
-    <mat-grid-tile>
-        <mat-card class="item">
-            <mat-card-header>
-                <div mat-card-avatar class="example-header-image"></div>
-                <mat-card-title>{{item.description}}</mat-card-title>
-                <mat-card-subtitle>
-                    ${{item.price}}</mat-card-subtitle>
-            </mat-card-header>
-
-            <mat-card-content>
-                <img mat-card-image src={{item.image}} alt={{item.description}}>
-                <p>
-                    {{item.description}}
-                </p>
-            </mat-card-content>
-            <mat-card-actions>
-                <button mat-button>ADD TO CART</button>
-                <button mat-button>SAVE FOR LATER</button>
-            </mat-card-actions>
-        </mat-card>
-    </mat-grid-tile>
-    } @empty {
-    <h1>There Are No Products Currently Avaiable</h1>
-    }
-</mat-grid-list>

@@ -2,7 +2,7 @@ import { Component, OnInit, WritableSignal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { EcommerceService } from '../ecommerce.service';
 import { Product } from '../product';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
@@ -28,7 +28,7 @@ export interface Task {
 })
 export class CatalogComponent implements OnInit {
 products$={}as WritableSignal<Product[]>
-constructor(private ecommerceService:EcommerceService) {}
+constructor(private ecommerceService:EcommerceService,private router:Router) {}
 ngOnInit(){
   this.fetchProducts()
 }
@@ -68,6 +68,18 @@ private fetchProducts():void{
       return;
     }
     this.task.subtasks.forEach(t => (t.completed = completed));
+  }
+
+  returnID(id:string){
+    this.ecommerceService.addToCart(id).subscribe({
+      next: () => {
+        this.router.navigate(['/cart']);
+      },
+      error: (error) => {
+        alert('Failed to create user');
+        console.error(error);
+      },
+    });
   }
 }
 
