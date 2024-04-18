@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { signupFormComponent } from '../signupForm/signupForm.component';
 import { logininFormComponent } from '../login-form/login-form.component';
-
 import { User } from '../user';
 import { UserService } from '../user.service';
 import { MatCardModule } from '@angular/material/card';

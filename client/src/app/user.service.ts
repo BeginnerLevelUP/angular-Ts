@@ -9,32 +9,14 @@ import { User } from './user';
 })
 export class UserService {
 private readonly JWT_TOKEN = 'JWT_TOKEN';
-  private loggedUser?: string;
   user$ = signal<User>({} as User);
+
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
+
   private router = inject(Router);
   private http = inject(HttpClient);
-  constructor() {}
-      register(user:User){
-      return this.http.post(`http://localhost:5200/api/auth/register`,user,{responseType:'text'})
-      .pipe(
-        tap((tokens: any) =>
-          this.doLoginUser(user.email, JSON.stringify(tokens))
-        )
-      );
-    }
-  login(user: { email: string; password: string }): Observable<any> {
-    return this.http
-      .post('http://localhost:5200/api/auth/login', user)
-      .pipe(
-        tap((tokens: any) =>
-          this.doLoginUser(user.email, JSON.stringify(tokens))
-        )
-      );
-  }
 
-  private doLoginUser(email: string, token: any) {
-    this.loggedUser = email;
+  private doLoginUser(token: any) {
     this.storeJwtToken(token);
     this.isAuthenticatedSubject.next(true);
   }
@@ -42,8 +24,27 @@ private readonly JWT_TOKEN = 'JWT_TOKEN';
   private storeJwtToken(jwt: string) {
     localStorage.setItem(this.JWT_TOKEN, jwt);
   }
+register(user:User){
+      return this.http.post(`http://localhost:5200/api/auth/register`,user,{responseType:'text'})
+      .pipe(
+        tap((tokens: any) =>
+          this.doLoginUser(JSON.stringify(tokens))
+        )
+      );
 
-  logout() {
+    }
+    
+  login(user: { email: string; password: string }): Observable<any> {
+    return this.http
+      .post('http://localhost:5200/api/auth/login', user)
+      .pipe(
+        tap((tokens: any) =>
+          this.doLoginUser(JSON.stringify(tokens))
+        )
+      );
+  }
+
+logout() {
     localStorage.removeItem(this.JWT_TOKEN);
     this.isAuthenticatedSubject.next(false);
     this.router.navigate(['/login']);
