@@ -4,6 +4,7 @@ import { CartComponent } from './cart/cart.component';
 import { CatalogComponent } from './catalog/catalog.component';
 import { FavoriteComponent } from './favorite/favorite.component';
 import { AuthenticateComponent } from './authenticate/authenticate.component';
+import { ProductPageComponent } from './product-page/product-page.component';
 export const routes: Routes = [
     {
         path:'',
@@ -24,10 +25,16 @@ export const routes: Routes = [
     path:'favortie',
     component:FavoriteComponent,
     title:"Favorites"
-    },{
+    },
+    {
     path:'signup',
     component:AuthenticateComponent,
     title:"Authenticate"
-    }   
+    },
+    {
+    path:'product/:id',
+    component:ProductPageComponent,
+    title:"Product"
+    } 
 
 ];

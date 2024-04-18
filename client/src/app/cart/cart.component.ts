@@ -14,6 +14,7 @@ import { signal } from '@angular/core';
 import { User } from '../user';
 import { EcommerceService } from '../ecommerce.service';
 import { Router } from '@angular/router';
+import { Product } from '../product';
 @Component({
   selector: 'app-cart',
   standalone: true,
@@ -23,13 +24,12 @@ import { Router } from '@angular/router';
 })
 export class CartComponent {
   user$={}as WritableSignal<User>
-
+  realted={}as WritableSignal<Product>
   constructor(private userService: UserService,private ecommerceService:EcommerceService,private router:Router){}
   
 
   ngOnInit(): void {
     this.user$=this.userService.user$
-    console.log(this.user$())
     this.userService.getUserData()
   }
 
@@ -43,6 +43,10 @@ export class CartComponent {
         console.error(error);
       },
     });
+  }
+
+  related(category:string){
+    this.ecommerceService.getRelated('jewelery')
   }
 
 }

@@ -11,6 +11,7 @@ export class EcommerceService {
   private url = 'http://localhost:5200';
   products$ = signal<Product[]>([]);
   product$ = signal<Product>({} as Product);
+  realted$= signal<Product[]>([]);
   constructor(private httpClient: HttpClient ,private userService:UserService) { }
 
 
@@ -29,6 +30,7 @@ export class EcommerceService {
   getProduct(id: string){
     this.httpClient.get<Product>(`${this.url}/api/products/${id}`).subscribe(product => {
     this.product$.set(product);
+    this.getRelated(product.category)
     return this.product$();
     });
   }
@@ -41,6 +43,15 @@ export class EcommerceService {
   addToFavorite(id:string):Observable<any>{
   const user:any=this.userService.getCurrentAuthUser()
   return  this.httpClient.get(`${this.url}/api/user/${user.data._id}/favorite/${id}`)
+  }
+
+  getRelated(category:string){
+    this.httpClient.get<Product[]>(`${this.url}/api/products/category/${category}`).subscribe(related=>{
+      this.realted$.set(related)
+      console.log(this.realted$())
+      return this.realted$()
+    })
+
   }
 
 }

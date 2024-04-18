@@ -29,3 +29,9 @@ try{
 }
 })
 
+productRouter.get("/products/category/:category",async(req:Request,res:Response,next:NextFunction)=>{
+    const category=req.params.category
+    const productsByCategory=await collections?.products?.find({"category":category}).toArray()
+    res.status(200).send(productsByCategory)
+
+})

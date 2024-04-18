@@ -52,6 +52,7 @@
         <button mat-button (click)="cart(item._id)">ADD TO CART</button>
         <button mat-button (click)="favorite(item._id)">SAVE FOR LATER</button>
     </mat-card-actions>
+    <a [routerLink]="['/product',item._id]">Click For More</a>
 </mat-card>
 </mat-grid-tile>
 } @empty {
