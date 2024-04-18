@@ -38,4 +38,9 @@ export class EcommerceService {
   return  this.httpClient.get(`${this.url}/api/user/${user.data._id}/cart/${id}`)
   }
 
+  addToFavorite(id:string):Observable<any>{
+  const user:any=this.userService.getCurrentAuthUser()
+  return  this.httpClient.get(`${this.url}/api/user/${user.data._id}/favorite/${id}`)
+  }
+
 }

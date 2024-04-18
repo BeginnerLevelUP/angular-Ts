@@ -1,21 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, WritableSignal} from '@angular/core';
 import { UserService } from '../user.service';
+import { Router,RouterModule } from '@angular/router';
+import { User } from '../user';
+import { MatCardModule } from '@angular/material/card';
+import { EcommerceService } from '../ecommerce.service';
 @Component({
   selector: 'app-favorite',
   standalone: true,
-  imports: [],
-  template: `<article>
-
-    <section class="favorite-header">
-            <h1>{{ user ? user.data.username.toUpperCase()+ "'s Cart" : "Your Cart" }}</h1>
-<svg fill="#673ab7" width="50" height="50" xmlns="http://www.w3.org/2000/svg">
-    <path
-        d="M25 39.7l-.6-.5C11.5 28.7 8 25 8 19c0-5 4-9 9-9 4.1 0 6.4 2.3 8 4.1 1.6-1.8 3.9-4.1 8-4.1 5 0 9 4 9 9 0 6-3.5 9.7-16.4 20.2l-.6.5zM17 12c-3.9 0-7 3.1-7 7 0 5.1 3.2 8.5 15 18.1 11.8-9.6 15-13 15-18.1 0-3.9-3.1-7-7-7-3.5 0-5.4 2.1-6.9 3.8L25 17.1l-1.1-1.3C22.4 14.1 20.5 12 17 12z" />
-</svg>
-    </section>
-
-</article>
-`,
+  imports: [MatCardModule],
+  templateUrl: "./favorite.component.html",
   styles: `.favorite-header {
     display: flex;
     justify-content: space-evenly;
@@ -24,20 +17,42 @@ import { UserService } from '../user.service';
 .favorite-header h1 {
     font-weight: 900;
     margin: 0 .5em
-}`
+}
+img{
+    width:200px;
+    height:200px;
+}
+
+.item{
+    max-width:400px;
+    display:flex;
+    justify-content:center;
+    flex-direction:column;
+}
+`
 })
 export class FavoriteComponent {
-  user?: any;
+  user$={}as WritableSignal<User>
 
-  constructor(private userService: UserService){}
+  constructor(private userService: UserService,private ecommerceService:EcommerceService,private router:Router){}
   
 
+
   ngOnInit(): void {
-    const currentUser = this.userService.getCurrentAuthUser();
-    if (currentUser) {
-      this.user = currentUser;
-      console.log(currentUser)
-    }
+    this.user$=this.userService.user$
+    console.log(this.user$())
+    this.userService.getUserData()
   }
 
+  cart(id:string){
+    this.ecommerceService.addToCart(id).subscribe({
+      next: () => {
+        this.router.navigate(['/cart']);
+      },
+      error: (error) => {
+        alert('Failed to create user');
+        console.error(error);
+      },
+    });
+  }
 }

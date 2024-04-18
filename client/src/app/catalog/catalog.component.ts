@@ -70,10 +70,22 @@ private fetchProducts():void{
     this.task.subtasks.forEach(t => (t.completed = completed));
   }
 
-  returnID(id:string){
+  cart(id:string){
     this.ecommerceService.addToCart(id).subscribe({
       next: () => {
         this.router.navigate(['/cart']);
+      },
+      error: (error) => {
+        alert('Failed to create user');
+        console.error(error);
+      },
+    });
+  }
+
+  favorite(id:string){
+    this.ecommerceService.addToFavorite(id).subscribe({
+      next: () => {
+        this.router.navigate(['/']);
       },
       error: (error) => {
         alert('Failed to create user');

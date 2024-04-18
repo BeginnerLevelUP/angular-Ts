@@ -23,6 +23,10 @@ authRouter.post("/auth/register", async (req, res) => {
             cart:{
                 items: [],
                 cartTotal: 0,
+            },
+            favorite:{
+                items:[],
+                total:0
             }
         };
 

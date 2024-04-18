@@ -44,6 +44,9 @@ async function applySchemaValidation(db: mongodb.Db) {
                 },
                 cart:{
                   bsonType:'object'
+                },
+                favorite:{
+                  bsonType:'object'
                 }
             },
         },

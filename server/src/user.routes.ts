@@ -150,7 +150,20 @@ for(const item of user?.cart.items){
 
     // Spread the properties of `product` into `item`
     Object.assign(item, product);
+}
+
+for(const item of user?.favorite.items){
+    const productId = item.productId;
+    const product = await collections?.products?.findOne<Product>({ _id: productId });
+
+    if (!product) {
+        return res.status(404).json({ message: `Product with ID ${productId} not found` });
+    }
+
+    // Spread the properties of `product` into `item`
+    Object.assign(item, product);
 }    
+ user.favorite.items = user.favorite.items.map(item => ({ ...item }))
  user.cart.items = user.cart.items.map(item => ({ ...item }))
     res.status(200).send(user)
   }catch(error){
@@ -158,5 +171,39 @@ for(const item of user?.cart.items){
   }
 })
 
+userRouter.get('/user/:userId/favorite/:productId', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const userId = req?.params?.userId;
+    const queryUser = { _id: new ObjectId(userId) };
+    const user = await collections?.users?.findOne<User>(queryUser);
+
+    const productId = req?.params?.productId;
+    const queryProduct = { _id: new ObjectId(productId) };
+    const product = await collections?.products?.findOne<Product>(queryProduct);
+
+    // Check if the user and product exist
+    if (!user || !product) {
+      return res.status(404).json({ message: "User or Product not found" });
+    }
+
+    // Check if user.favorite exists
+    if (!user.favorite || !user.favorite.items) {
+      return res.status(400).json({ message: "User favorites are missing" });
+    }
+      const favortieItem: { productId: ObjectId; quantity: number; total: number } = {
+        productId: product._id,
+        quantity: 0,
+        total: product.price,
+      };
+
+      await collections?.users?.findOneAndUpdate(queryUser, { $addToSet: { "favorite.items": favortieItem} });
+     
+
+
+    
+  } catch (error) {
+    res.status(500).json({ error: error instanceof Error ? error.message : "Unknown Error" });
+  }
+});
 
 //instead of doing with middleware do it with pre from mongo basically database middleware

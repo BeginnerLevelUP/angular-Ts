@@ -12,6 +12,8 @@ import {FormsModule} from '@angular/forms';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { signal } from '@angular/core';
 import { User } from '../user';
+import { EcommerceService } from '../ecommerce.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-cart',
   standalone: true,
@@ -22,7 +24,7 @@ import { User } from '../user';
 export class CartComponent {
   user$={}as WritableSignal<User>
 
-  constructor(private userService: UserService){}
+  constructor(private userService: UserService,private ecommerceService:EcommerceService,private router:Router){}
   
 
   ngOnInit(): void {
@@ -31,5 +33,16 @@ export class CartComponent {
     this.userService.getUserData()
   }
 
+    favorite(id:string){
+    this.ecommerceService.addToFavorite(id).subscribe({
+      next: () => {
+        this.router.navigate(['/favorite']);
+      },
+      error: (error) => {
+        alert('Failed to create user');
+        console.error(error);
+      },
+    });
+  }
 
 }
