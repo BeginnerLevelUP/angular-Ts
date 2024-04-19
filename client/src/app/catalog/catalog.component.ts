@@ -8,16 +8,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatChipsModule} from '@angular/material/chips';
-import {ThemePalette} from '@angular/material/core';
 import {FormsModule} from '@angular/forms';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 
-export interface Task {
-  name: string;
-  completed: boolean;
-  color: ThemePalette;
-  subtasks?: Task[];
-}
 
 @Component({
   selector: 'app-catalog',
@@ -34,41 +27,8 @@ ngOnInit(){
 }
 private fetchProducts():void{
   this.products$=this.ecommerceService.products$
-  console.log(this.products$())
   this.ecommerceService.getProducts()
 }
-
- task: Task = {
-    name: 'Indeterminate',
-    completed: false,
-    color: 'primary',
-    subtasks: [
-      {name: 'Primary', completed: false, color: 'primary'},
-      {name: 'Accent', completed: false, color: 'accent'},
-      {name: 'Warn', completed: false, color: 'warn'},
-    ],
-  };
-
-  allComplete: boolean = false;
-
-  updateAllComplete() {
-    this.allComplete = this.task.subtasks != null && this.task.subtasks.every(t => t.completed);
-  }
-
-  someComplete(): boolean {
-    if (this.task.subtasks == null) {
-      return false;
-    }
-    return this.task.subtasks.filter(t => t.completed).length > 0 && !this.allComplete;
-  }
-
-  setAll(completed: boolean) {
-    this.allComplete = completed;
-    if (this.task.subtasks == null) {
-      return;
-    }
-    this.task.subtasks.forEach(t => (t.completed = completed));
-  }
 
   cart(id:string){
     this.ecommerceService.addToCart(id).subscribe({
@@ -92,6 +52,16 @@ private fetchProducts():void{
         console.error(error);
       },
     });
+  }
+
+  filter(category:string|null){
+    if(category){
+   const byCategory= this.ecommerceService.getRelated(category)
+   this.products$=this.ecommerceService.realted$
+    }else{
+      this.fetchProducts()
+    }
+
   }
 }
 

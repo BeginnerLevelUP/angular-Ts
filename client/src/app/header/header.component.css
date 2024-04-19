@@ -4,16 +4,7 @@
     padding : 2em
 }
 
-.header-nav a{
-    border:1px solid black;
-    margin:0 .5em;
-    padding:0.5em;
-    border-radius:8px;
-    background-color: var(--accent);
-    transition: .5s;
-    color:white;
-    text-decoration:none;
-}
+
 #header h1{
 color:var(--primary);
 font-size:4em;
