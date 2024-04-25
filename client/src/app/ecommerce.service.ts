@@ -3,7 +3,7 @@ import { Injectable, signal } from '@angular/core';
 import { Product } from './product';
 import { Cart } from './cart';
 import { UserService } from './user.service';
-import { Observable } from 'rxjs';
+import { Observable, single } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -12,6 +12,7 @@ export class EcommerceService {
   products$ = signal<Product[]>([]);
   product$ = signal<Product>({} as Product);
   realted$= signal<Product[]>([]);
+  searched$=signal<Product[]>([])
   constructor(private httpClient: HttpClient ,private userService:UserService) { }
 
 
@@ -52,6 +53,13 @@ export class EcommerceService {
       return this.realted$()
     })
 
+  }
+
+  search(term:string|undefined){
+    this.httpClient.get<Product[]>(`${this.url}/api/products/search/${term}`).subscribe(search=>{
+      this.searched$.set(search)
+      return this.searched$
+    })
   }
 
 }

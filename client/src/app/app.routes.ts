@@ -5,6 +5,7 @@ import { CatalogComponent } from './catalog/catalog.component';
 import { FavoriteComponent } from './favorite/favorite.component';
 import { AuthenticateComponent } from './authenticate/authenticate.component';
 import { ProductPageComponent } from './product-page/product-page.component';
+import { SearchPageComponent } from './search-page/search-page.component';
 export const routes: Routes = [
     {
         path:'',
@@ -35,6 +36,11 @@ export const routes: Routes = [
     path:'product/:id',
     component:ProductPageComponent,
     title:"Product"
-    } 
+    },
+    {
+    path:"search/:term",
+    component:SearchPageComponent,
+    title:"Searched"
+    }
 
 ];

@@ -34,6 +34,11 @@
             <p>
                 {{item.description}}
             </p>
+            <ul>
+            @for (comment of item.reviews; track $index) {
+                <li>{{comment.comment}}</li>
+            }
+            </ul>
         </mat-card-content>
         <mat-card-actions>
             <button mat-button (click)="cart(item._id)">ADD TO CART</button>

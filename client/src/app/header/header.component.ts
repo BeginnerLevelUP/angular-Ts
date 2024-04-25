@@ -1,8 +1,8 @@
-import { Component,OnInit, inject } from '@angular/core';
+import { Component,OnInit, inject,effect,EventEmitter,input,Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router,RouterModule } from '@angular/router';
 import { UserService } from '../user.service';
-import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormControl, FormsModule, ReactiveFormsModule,Validators,FormBuilder} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {AsyncPipe} from '@angular/common';
@@ -11,6 +11,8 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { Inject } from '@angular/core';
 import { EcommerceService } from '../ecommerce.service';
+
+
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -27,9 +29,36 @@ import { EcommerceService } from '../ecommerce.service';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent implements OnInit {
-constructor(private userService:UserService,private router:Router){}
+constructor(private userService:UserService,private router:Router){
+  effect(
+    ()=>{
+      this.searchForm.setValue({
+        searchTerm:this.initialState()||''
+      })
+    }
+  )
+}
 ecommerceService=inject(EcommerceService)
 loggedIn:boolean=false
+formBuilder=inject(FormBuilder)
+initialState=input<string>()
+
+@Output()
+formValuesChanged=new EventEmitter<string>()
+
+@Output()
+formSubmitted= new EventEmitter<string>()
+
+searchForm=this.formBuilder.group({
+  searchTerm:['']
+})
+
+get searchTerm(){
+  return this.searchForm.get('searchTerm')
+}
+submitForm(){
+ this.router.navigate(['/search',this.searchTerm?.value||'']);
+}
 myControl = new FormControl('');
 options: string[] = [
   "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
