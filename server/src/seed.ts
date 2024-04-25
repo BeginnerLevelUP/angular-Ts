@@ -15,7 +15,8 @@ async function fetchShoes(): Promise<Product[]> {
         const data:any = await response.json();
         const productsWithQuantity = data.map((product: Product) => ({
             ...product,
-            quantity: 50
+            quantity: 50,
+            reviews:[]
         }));
         return productsWithQuantity as Product[];
     } catch (error) {

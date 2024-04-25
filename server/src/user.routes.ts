@@ -3,7 +3,7 @@ import { ObjectId } from "mongodb";
 import { collections } from "./database";
 import { Cart } from "./cart"; // Import the Cart interface
 import { Product } from "./product"; // Import the Product interface
-import { User } from "./user";
+import { User,Review } from "./user";
 
 export const userRouter = express.Router();
 const updateProductQuantitiesMiddleware = async (req: Request, res: Response, next: NextFunction) => {
@@ -206,4 +206,119 @@ userRouter.get('/user/:userId/favorite/:productId', async (req: Request, res: Re
   }
 });
 
-//instead of doing with middleware do it with pre from mongo basically database middleware
+userRouter.post('/user/:userId/comment/:productId', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userId = req.params.userId;
+        const productId = req.params.productId;
+
+        const currentUser = await collections?.users?.findOne({ _id: new ObjectId(userId) });
+        if (!currentUser) {
+            return res.status(404).send('User not found');
+        }
+
+        // Check if the product exists (Assuming you have a products collection)
+        const product = await collections?.products?.findOne({ _id: new ObjectId(productId) });
+        if (!product) {
+            return res.status(404).send('Product not found');
+        }
+
+        const newReview: Review = {
+            _id:new ObjectId,
+            by: currentUser?.username || '',
+            comment: req.body.comment,
+            rating: req.body.rating
+        };
+
+        const updatedUser = await collections?.users?.findOneAndUpdate(
+            { _id: new ObjectId(userId) },
+            { $addToSet: { "reviews": newReview } }
+        );
+
+        if (!updatedUser) {
+            return res.status(500).send('Failed to add review');
+        }
+
+        // Update the product with the new review
+        const updatedProduct = await collections?.products?.findOneAndUpdate(
+            { _id: new ObjectId(productId) },
+            { $addToSet: { "reviews": newReview } }
+        );
+
+        if (!updatedProduct) {
+            return res.status(500).send('Failed to update product with review');
+        }
+
+        res.status(200).send('Review added successfully');
+    } catch (error) {
+        res.status(500).json({ error: error instanceof Error ? error.message : "Unknown Error" });
+    }
+});
+
+userRouter.put('/user/:userId/review/:reviewId', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userId = req.params.userId;
+        const reviewId = req.params.reviewId;
+
+        const updatedReviewData: Review = {
+            _id: new ObjectId(reviewId),
+            by: '', // Assuming this is not updated
+            comment: req.body.comment,
+            rating: req.body.rating
+        };
+
+        // Update the review in the user document
+        const updatedUserReview = await collections?.users?.findOneAndUpdate(
+            { _id: new ObjectId(userId), "reviews._id": updatedReviewData._id },
+            { $set: { "reviews.$": updatedReviewData } },
+        );
+
+        if (!updatedUserReview) {
+            return res.status(404).send('User review not found');
+        }
+
+        // Update the corresponding review in the product document
+        const updatedProductReview = await collections?.products?.updateOne(
+            { "reviews._id": updatedReviewData._id },
+            { $set: { "reviews.$": updatedReviewData } }
+        );
+
+        if (!updatedProductReview) {
+            return res.status(500).send('Failed to update product review');
+        }
+
+        res.status(200).send('Review updated successfully');
+    } catch (error) {
+        next(error); // Forward the error to the error handling middleware
+    }
+});
+
+userRouter.delete('/user/:userId/review/:reviewId', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userId = req.params.userId;
+        const reviewId = req.params.reviewId;
+
+        // Delete the review from the user document
+        const deletedUserReview = await collections?.users?.findOneAndUpdate(
+            { _id: new ObjectId(userId) },
+            { $pull: { "reviews": { _id: new ObjectId(reviewId) } } }
+        );
+
+        if (!deletedUserReview) {
+            return res.status(404).send('User review not found');
+        }
+
+        // Delete the review from the product document
+        const deletedProductReview = await collections?.products?.updateOne(
+            { "reviews._id": new ObjectId(reviewId) },
+            { $pull: { "reviews": { _id: new ObjectId(reviewId) } } }
+        );
+
+        if (!deletedProductReview) {
+            return res.status(500).send('Failed to delete product review');
+        }
+
+        res.status(200).send('Review deleted successfully');
+    } catch (error) {
+        next(error); // Forward the error to the error handling middleware
+    }
+});

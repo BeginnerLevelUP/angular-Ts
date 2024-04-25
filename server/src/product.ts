@@ -1,5 +1,13 @@
 
 import { ObjectId } from "mongodb";
+
+interface Review{
+    _id:ObjectId
+    by:string,
+    rating:number,
+    comment:string
+}
+
 export interface Product {
   _id:ObjectId;
   id: number;
@@ -12,5 +20,6 @@ export interface Product {
     rate: number;
     count: number;
   };
-  quantity:number
+  quantity:number,
+  reviews:Review[]
 }

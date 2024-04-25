@@ -10,13 +10,12 @@ export const authRouter = express.Router();
 
 authRouter.post("/auth/register", async (req, res) => {
     try {
-        const { _id, username, password, email } = req.body;
+        const { username, password, email } = req.body;
         // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Create the user object with the hashed password
         const user:User = {
-            _id: _id,
             username: username,
             password: hashedPassword,
             email: email,
@@ -27,7 +26,8 @@ authRouter.post("/auth/register", async (req, res) => {
             favorite:{
                 items:[],
                 total:0
-            }
+            },
+            reviews:[]
         };
 
         const result = await collections?.users?.insertOne(user);

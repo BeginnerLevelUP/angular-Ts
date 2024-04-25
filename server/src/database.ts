@@ -47,6 +47,9 @@ async function applySchemaValidation(db: mongodb.Db) {
                 },
                 favorite:{
                   bsonType:'object'
+                },
+                reviews:{
+                  bsonType:'array'
                 }
             },
         },
@@ -103,6 +106,9 @@ const jsonSchemaProduct = {
         bsonType: "number",
         description: "'quantity' is required and is a number",
       },
+      reviews:{
+      bsonType:'array'
+      }
     },
   },
 };

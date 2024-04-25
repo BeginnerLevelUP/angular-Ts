@@ -1,3 +1,8 @@
+interface Review{
+    by:string,
+    rating:number,
+    comment:string
+}
 export interface Product {
   _id:string;
   id: string;
@@ -10,6 +15,7 @@ export interface Product {
     rate: number;
     count: number;
   };
-  quantity:number
+  quantity:number,
+  reviews:Review[]
 }
 
