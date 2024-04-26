@@ -3,6 +3,7 @@ import {Cart,CartItem} from "./cart"
 export interface Review{
     _id:mongodb.ObjectId
     by:string,
+    product?:mongodb.ObjectId,
     rating:number,
     comment:string
 }

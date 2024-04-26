@@ -4,6 +4,10 @@ import { Product } from './product';
 import { Cart } from './cart';
 import { UserService } from './user.service';
 import { Observable, single } from 'rxjs';
+import { Review } from './user';
+
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -62,4 +66,17 @@ export class EcommerceService {
     })
   }
 
-}
+  addReview(review:any,userId:string,productId:string){
+   return this.httpClient.post(`${this.url}/api/user/${userId}/comment/${productId}`,review)
+  }
+
+  updateReview(review:Review,reviewId:string){
+  return this.httpClient.put<Review>(`${this.url}/api/user/${review?.by}/comment/${reviewId}`,review)
+  }
+
+  deleteReview(userId:number,reviewId:number){
+  return this.httpClient.delete<Review>(`${this.url}/api/user/${userId}/review/${reviewId}`)
+  }
+
+  }
+

@@ -1,8 +1,9 @@
 import { Cart } from "./cart";
 import { Product } from "./product";
-interface Review{
+export interface Review{
     by:string,
     rating:number,
+    product?:string ,
     comment:string
 }
 export interface User {

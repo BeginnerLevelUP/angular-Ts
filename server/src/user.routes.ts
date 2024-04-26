@@ -224,6 +224,7 @@ userRouter.post('/user/:userId/comment/:productId', async (req: Request, res: Re
 
         const newReview: Review = {
             _id:new ObjectId,
+            product:new ObjectId(productId),
             by: currentUser?.username || '',
             comment: req.body.comment,
             rating: req.body.rating

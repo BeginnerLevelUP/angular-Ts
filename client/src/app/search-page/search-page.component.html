@@ -13,11 +13,46 @@
     <mat-card-content>
         <img mat-card-image src={{item.image}} alt={{item.description}}>
         <p>
-            {{item.description}}
+            {{item.description}} {{this.user$()._id}}
         </p>
+
+        <form [formGroup]="commentForm" (submit)="submitForm(item._id,this.user$()._id||'')">
+            <mat-card>
+        
+                <mat-card-header>
+                    <h2>Rating</h2>
+                </mat-card-header>
+        
+                <mat-card-content>
+                    <mat-label>Leave a Comment </mat-label>
+                    <mat-slider class="example-margin" [disabled]="false" [max]="5" [min]="0" [step]="1" [discrete]="true"
+                        [showTickMarks]="true">
+                        <input matSliderThumb #slider formControlName="rating" required>
+                    </mat-slider>
+        
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Message</mat-label>
+                        <input matInput #message maxlength="256" placeholder="Amazing Product!!!!" formControlName="comment"
+                            required>
+                        <mat-hint align="start"><strong>Be constructive and stay respectful</strong> </mat-hint>
+                        <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
+                    </mat-form-field>
+        
+                    <button  type="submit">Post</button>
+                </mat-card-content>
+        
+            </mat-card>
+        
+        </form>
         <ul>
             @for (comment of item.reviews; track $index) {
-            <li>{{comment.comment}}</li>
+            <li>
+                {{comment.comment}}
+                <br>
+                {{comment.by}}
+                <br>
+                {{comment.rating}}
+            </li>
             }
         </ul>
     </mat-card-content>
