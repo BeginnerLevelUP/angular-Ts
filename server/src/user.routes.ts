@@ -259,10 +259,12 @@ userRouter.put('/user/:userId/review/:reviewId', async (req: Request, res: Respo
     try {
         const userId = req.params.userId;
         const reviewId = req.params.reviewId;
+        const currentUser=await collections.users?.findOne({_id:new ObjectId(userId)})
+        if(currentUser){
 
         const updatedReviewData: Review = {
             _id: new ObjectId(reviewId),
-            by: '', // Assuming this is not updated
+            by: currentUser.username, // Assuming this is not updated
             comment: req.body.comment,
             rating: req.body.rating
         };
@@ -270,7 +272,7 @@ userRouter.put('/user/:userId/review/:reviewId', async (req: Request, res: Respo
         // Update the review in the user document
         const updatedUserReview = await collections?.users?.findOneAndUpdate(
             { _id: new ObjectId(userId), "reviews._id": updatedReviewData._id },
-            { $set: { "reviews.$": updatedReviewData } },
+            { $set: { "reviews.$": {...updatedReviewData }} },
         );
 
         if (!updatedUserReview) {
@@ -288,8 +290,12 @@ userRouter.put('/user/:userId/review/:reviewId', async (req: Request, res: Respo
         }
 
         res.status(200).send('Review updated successfully');
+        }else{
+          res.status(404).send('user not found')
+        }
+
     } catch (error) {
-        next(error); // Forward the error to the error handling middleware
+        res.status(500).json({ error: error instanceof Error ? error.message : "Unknown Error" });
     }
 });
 

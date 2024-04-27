@@ -2,7 +2,9 @@ import { Component,effect,EventEmitter,input,Output,output,inject} from '@angula
 import { Router,ActivatedRoute,RouterModule } from '@angular/router';
 import { Inject,WritableSignal} from '@angular/core';
 import { EcommerceService } from '../ecommerce.service';
+import { UserService } from '../user.service';
 import { Product } from '../product';
+import { User } from '../user';
 import { MatCardModule } from '@angular/material/card';;
 import {MatSliderModule} from '@angular/material/slider';
 import {MatCheckboxModule} from '@angular/material/checkbox';
@@ -52,9 +54,9 @@ router=inject(Router)
 formBuilder=inject(FormBuilder)
 product$={}as WritableSignal<Product>
 realted$={}as WritableSignal<Product[]>
-
+userService=inject(UserService)
 initialState=input<CommentForm>()
-
+user$={}as WritableSignal<User>
 @Output()
 formValuesChanged=new EventEmitter<CommentForm>()
 
@@ -73,11 +75,15 @@ get rating(){
 get comment(){
   return this.commentForm.get('comment')
 }
-submitForm(){
+
+submitForm(productId:string,userId:string){
 console.log(this.commentForm.value)
+this.ecommerceService.addReview(this.commentForm.value,userId,productId)
 }
 
 ngOnInit(){
+   this.userService.getUserData()
+  this.user$=this.userService.user$
   this.fetchData()
 }
 
@@ -112,4 +118,11 @@ private fetchData():void{
     });
   }
 
+    deleteReview(userId:string,reviewId:string){
+    this.ecommerceService.deleteReview(userId,reviewId)
+  }
+
+  editReview(){
+    
+  }
 }

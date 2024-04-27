@@ -11,38 +11,52 @@
         <p>
             {{product$().description}}
         </p>
-        <form [formGroup]="commentForm" (submit)="submitForm">
-            <mat-card>
-        
-                <mat-card-header>
-                    <h2>Rating</h2>
-                </mat-card-header>
-        
-                <mat-card-content>
-                    <mat-label>Leave a Comment </mat-label>
-                    <mat-slider class="example-margin" [disabled]="false" [max]="5" [min]="0" [step]="1" [discrete]="true"
-                        [showTickMarks]="true">
-                        <input matSliderThumb #slider formControlName="rating" required>
-                    </mat-slider>
-        
-                    <mat-form-field class="example-full-width">
-                        <mat-label>Message</mat-label>
-                        <input matInput #message maxlength="256" placeholder="Amazing Product!!!!" formControlName="comment" required>
-                        <mat-hint align="start"><strong>Be constructive and stay respectful</strong> </mat-hint>
-                        <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
-                    </mat-form-field>
-                
-                <button type="submit">Post</button>
-                </mat-card-content>
-        
-            </mat-card>
-        
-        </form>
-         <ul>
-        @for (comment of product$().reviews; track $index) {
-        <li>{{comment.comment}}</li>
+<form [formGroup]="commentForm" (submit)="submitForm(product$()._id,this.user$()._id||'')">
+    <mat-card>
+
+        <mat-card-header>
+            <h2>Rating</h2>
+        </mat-card-header>
+
+        <mat-card-content>
+            <mat-label>Leave a Comment </mat-label>
+            <mat-slider class="example-margin" [disabled]="false" [max]="5" [min]="0" [step]="1" [discrete]="true"
+                [showTickMarks]="true">
+                <input matSliderThumb #slider formControlName="rating" required>
+            </mat-slider>
+
+            <mat-form-field class="example-full-width">
+                <mat-label>Message</mat-label>
+                <input matInput #message maxlength="256" placeholder="Amazing Product!!!!" formControlName="comment"
+                    required>
+                <mat-hint align="start"><strong>Be constructive and stay respectful</strong> </mat-hint>
+                <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
+            </mat-form-field>
+
+            <button type="submit">Post</button>
+        </mat-card-content>
+
+    </mat-card>
+
+</form>
+            @for (comment of product$().reviews; track $index) {
+            <ul>
+                <li>
+                    {{comment._id}}
+                    <br>
+                    {{comment.comment}}
+                    <br>
+                    {{comment.by}}
+                    <br>
+                    {{comment.rating}}
+                </li>
+            </ul>
+            @if(this.user$().username===comment.by){
+            <button>Edit</button>
+            <button (click)="deleteReview(this.user$()._id||'',comment._id)">Delete</button>
             }
-         </ul>
+            
+            }
     </mat-card-content>
     <mat-card-actions>
         <button mat-button (click)="cart(product$()._id)">ADD TO CART</button>

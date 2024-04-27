@@ -67,15 +67,24 @@ export class EcommerceService {
   }
 
   addReview(review:any,userId:string,productId:string){
-   return this.httpClient.post(`${this.url}/api/user/${userId}/comment/${productId}`,review)
+   return this.httpClient.post(`${this.url}/api/user/${userId}/comment/${productId}`,review).subscribe(
+        data => console.log('success', data),
+        error => console.log('oops', error)
+      );
   }
 
-  updateReview(review:Review,reviewId:string){
-  return this.httpClient.put<Review>(`${this.url}/api/user/${review?.by}/comment/${reviewId}`,review)
+  updateReview(review:any,userId:string,reviewId:string){
+  return this.httpClient.put(`${this.url}/api/user/${userId}/review/${reviewId}`,review).subscribe(
+        data => console.log('success', data),
+        error => console.log('oops', error)
+      );
   }
 
-  deleteReview(userId:number,reviewId:number){
-  return this.httpClient.delete<Review>(`${this.url}/api/user/${userId}/review/${reviewId}`)
+  deleteReview(userId:string,reviewId:string){
+  return this.httpClient.delete(`${this.url}/api/user/${userId}/review/${reviewId}`).subscribe(
+        data => console.log('success', data),
+        error => console.log('oops', error)
+      );
   }
 
   }

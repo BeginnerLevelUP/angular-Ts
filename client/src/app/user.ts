@@ -1,6 +1,7 @@
 import { Cart } from "./cart";
 import { Product } from "./product";
 export interface Review{
+    _id:string,
     by:string,
     rating:number,
     product?:string ,

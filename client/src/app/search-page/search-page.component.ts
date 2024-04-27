@@ -40,9 +40,16 @@ constructor(){
         rating:this.initialState()?.rating||0,
         comment:this.initialState()?.comment||''
       })
+
+      this.updateCommentForm.setValue({
+        rating:0,
+        comment:''
+      })
     }
   )
 }
+
+edit:boolean=false
 formBuilder=inject(FormBuilder)
 route:ActivatedRoute=inject(ActivatedRoute)
 ecommerceService=inject(EcommerceService)
@@ -51,6 +58,7 @@ router=inject(Router)
 searched$={}as WritableSignal<Product[]>
 initialState=input<CommentForm>()
   user$={}as WritableSignal<User>
+
 @Output()
 formValuesChanged=new EventEmitter<CommentForm>()
 
@@ -62,6 +70,11 @@ rating:[0,[Validators.required]],
 comment:['',[Validators.minLength(5),Validators.maxLength(256)]]
 })
 
+updateCommentForm=this.formBuilder.group({
+rating:[0,[Validators.required]],
+comment:['',[Validators.minLength(5),Validators.maxLength(256)]]
+})
+
 get rating(){
   return this.commentForm.get('rating')
 }
@@ -69,6 +82,7 @@ get rating(){
 get comment(){
   return this.commentForm.get('comment')
 }
+
 submitForm(productId:string,userId:string){
 console.log(this.commentForm.value)
 this.ecommerceService.addReview(this.commentForm.value,userId,productId)
@@ -108,4 +122,10 @@ private fetchData():void{
       },
     });
   }
+
+  deleteReview(userId:string,reviewId:string){
+    this.ecommerceService.deleteReview(userId,reviewId)
+  }
+
+
 }

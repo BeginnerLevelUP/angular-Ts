@@ -13,7 +13,7 @@
     <mat-card-content>
         <img mat-card-image src={{item.image}} alt={{item.description}}>
         <p>
-            {{item.description}} {{this.user$()._id}}
+            {{item.description}} 
         </p>
 
         <form [formGroup]="commentForm" (submit)="submitForm(item._id,this.user$()._id||'')">
@@ -43,18 +43,47 @@
         
             </mat-card>
         
-        </form>
-        <ul>
+        </form> 
             @for (comment of item.reviews; track $index) {
+            <ul>
             <li>
+              {{comment._id}}
+                <br>
                 {{comment.comment}}
                 <br>
                 {{comment.by}}
                 <br>
                 {{comment.rating}}
             </li>
+            </ul>
+            @if(this.user$().username===comment.by){
+            <button (click)="edit=!edit">Edit</button>
+            <button (click)="deleteReview(this.user$()._id||'',comment._id)" >Delete</button>
             }
-        </ul>
+             @if(edit){
+            <form [formGroup]='updateCommentForm' (submit)="this.ecommerceService.updateReview(this.updateCommentForm.value||{},this.user$()._id||'',comment._id)" >
+                            <mat-card>              
+                                <mat-card-content>
+                                    <mat-slider class="example-margin" [disabled]="false" [max]="5" [min]="0" [step]="1" [discrete]="true"
+                                        [showTickMarks]="true">
+                                        <input matSliderThumb #slider  required value={{comment.rating}} formControlName="rating">
+                                    </mat-slider>
+                        
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput #message maxlength="256" placeholder="Update" 
+                                            required value={{comment.comment}} formControlName="comment">
+                                    </mat-form-field>
+                        
+                                    <button type="submit">Update</button>
+                                </mat-card-content>
+                        
+                            </mat-card>
+                        
+                        </form>
+             }
+            }
+      
+
     </mat-card-content>
     <mat-card-actions>
         <button mat-button (click)="cart(item._id)">ADD TO CART</button>
