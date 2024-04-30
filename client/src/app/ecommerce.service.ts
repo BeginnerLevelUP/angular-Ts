@@ -45,11 +45,25 @@ export class EcommerceService {
   return  this.httpClient.get(`${this.url}/api/user/${user.data._id}/cart/${id}`)
   }
 
+  updateCart(id:string,quant:number){
+  const user:any=this.userService.getCurrentAuthUser()
+  return this.httpClient.get(`${this.url}/api/user/${user.data._id}/cart/${id}/${quant}`)
+  }
+
+  removeCart(id:string){
+  const user:any=this.userService.getCurrentAuthUser()
+  return this.httpClient.delete(`${this.url}/api/user/${user.data._id}/cart/${id}`)
+  }
+
   addToFavorite(id:string):Observable<any>{
   const user:any=this.userService.getCurrentAuthUser()
   return  this.httpClient.get(`${this.url}/api/user/${user.data._id}/favorite/${id}`)
   }
 
+  removeFavorite(id:String){
+    const user:any=this.userService.getCurrentAuthUser()
+  return this.httpClient.delete(`${this.url}/api/user/${user.data._id}/favorite/${id}`)
+  }
   getRelated(category:string){
     this.httpClient.get<Product[]>(`${this.url}/api/products/category/${category}`).subscribe(related=>{
       this.realted$.set(related)

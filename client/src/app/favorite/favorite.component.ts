@@ -55,4 +55,16 @@ export class FavoriteComponent {
       },
     });
   }
+
+  removeFavorite(id:string){
+    this.ecommerceService.removeFavorite(id).subscribe({
+      next: () => {
+        // this.router.navigate(['/cart']);
+      },
+      error: (error) => {
+        alert('Failed to create user');
+        console.error(error);
+      },
+    });
+  }
 }
