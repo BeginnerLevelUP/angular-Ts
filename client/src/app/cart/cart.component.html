@@ -18,7 +18,7 @@
     <mat-card class="item">
         <mat-card-header>
             <div mat-card-avatar class="example-header-image"></div>
-            <mat-card-title>{{item.title}}  {{item.quantity}}</mat-card-title>
+            <mat-card-title>{{item.title}}  {{49-item.quantity}}</mat-card-title>
             <mat-card-subtitle>
                 ${{item.price}}</mat-card-subtitle>
         </mat-card-header>
@@ -33,7 +33,7 @@
         <button mat-button (click)="favorite(item._id)">SAVE FOR LATER</button>
         <button mat-button (click)="removeCart(item._id)">Remove From Cart</button>
 
-    <button mat-button [matMenuTriggerFor]="menu">Menu</button>
+    <button mat-button [matMenuTriggerFor]="menu">Quantity</button>
     <mat-menu #menu="matMenu">
         @for (number of quant; track $index) {
         <button mat-menu-item (click)="updateCart(item._id,quant[number])">{{number}}</button>

@@ -32,7 +32,7 @@ export class CartComponent {
   ngOnInit(): void {
     this.user$=this.userService.user$
     this.userService.getUserData()
-      for (let i: number = 0; i <= 50; i++) {
+      for (let i: number = 1; i <= 50; i++) {
     this.quant.push(i)
   }
   }
