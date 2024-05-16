@@ -10,6 +10,7 @@ import {MatSliderModule} from '@angular/material/slider';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatButtonModule} from '@angular/material/button';
 import {FormControl, FormsModule, ReactiveFormsModule,Validators,FormBuilder} from '@angular/forms';
 
 interface CommentForm{
@@ -21,6 +22,7 @@ comment:string
   selector: 'app-product-page',
   standalone: true,
   imports: [
+    MatButtonModule,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
@@ -33,9 +35,32 @@ comment:string
   ],
   templateUrl:"./product.component.html",
   styles: `
-  .example-full-width {
-  width: 100%;
-}`
+  .container{
+display: flex;
+flex-direction: column;
+justify-content:space-evenly;
+margin:0 30%;
+
+  }
+  .item{
+   width:600px;
+   height:600px;
+   margin:2% 0
+  }
+  .item img{
+    
+    width:200px;
+    height:200px;
+  }
+  .title{
+    color:white;
+    margin:5rem;
+    border:2px solid black;
+    width:fit-content;
+    padding:2rem;
+    border-radius:20px;
+  }
+  `
 })
 export class ProductPageComponent {
 constructor(){

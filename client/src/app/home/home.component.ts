@@ -18,7 +18,7 @@ export interface Tile {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MatGridListModule,MatChipsModule,MatTabsModule,RouterModule, MatTableModule, MatButtonModule, MatCardModule,],
+  imports: [ MatCardModule,MatGridListModule,MatChipsModule,MatTabsModule,RouterModule, MatTableModule, MatButtonModule, MatCardModule,],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -28,11 +28,10 @@ ecommerceService=inject(EcommerceService)
 router=inject(Router)
 
   tiles: Tile[] = [
-    {text: Math.floor(Math.random() * (1 +20 -1)) + 1, cols: 3, rows: 1, color: 'white'},
-    {text:Math.floor(Math.random() * (1 +20 -1)) + 1, cols: 1, rows: 1, color:  'white'},
-    {text: Math.floor(Math.random() * (1 +20 -1)) + 1, cols: 1, rows: 1, color: 'white'},
-    {text:Math.floor(Math.random() * (1 +20 -1)) + 1, cols: 2, rows: 1, color:'white'},
-     {text:Math.floor(Math.random() * (1 +20 -1)) + 1, cols: 1, rows: 1, color:  'white'},
+    {text: Math.floor(Math.random() * (1 +20 -1)) + 1, cols: 1, rows: 1, color: 'none'},
+    {text:Math.floor(Math.random() * (1 +20 -1)) + 1, cols: 1, rows: 1, color:  'none'},
+    {text: Math.floor(Math.random() * (1 +20 -1)) + 1, cols: 1, rows: 1, color: 'none'},
+    {text:Math.floor(Math.random() * (1 +20 -1)) + 1, cols: 1, rows: 1, color:'none'},
   ];
 
 ngOnInit(): void {

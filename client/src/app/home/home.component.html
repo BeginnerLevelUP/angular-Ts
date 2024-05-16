@@ -1,10 +1,21 @@
 <a [routerLink]="['/catalog']"> Explore Our Catalog</a>
-<mat-grid-list cols="4" rowHeight="500px">
+<mat-grid-list cols="4" rowHeight="400px" rowWidth="400px"  >
     @for (tile of tiles; track tile) {
     <mat-grid-tile [colspan]="tile.cols" [rowspan]="tile.rows"
-        [style.background]="tile.color">
-       <img src={{this.products$()[tile.text].image}} width="400px" height="400px" 
-       [routerLink]="['/product',this.products$()[tile.text]._id]">
+        [style.background]="tile.color" >
+        
+
+       
+        <mat-card class="item">
+            <mat-card-header>
+            {{this.products$()[tile.text].title}}
+            </mat-card-header>
+            <mat-card-content>
+    <img src={{this.products$()[tile.text].image}} width="200px" height="200px"
+        [routerLink]="['/product',this.products$()[tile.text]._id]">
+            </mat-card-content>
+
+        </mat-card>
     </mat-grid-tile>
     }
 </mat-grid-list>
