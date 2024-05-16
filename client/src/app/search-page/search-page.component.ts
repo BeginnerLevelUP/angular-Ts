@@ -11,6 +11,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {FormControl, FormsModule, ReactiveFormsModule,Validators,FormBuilder} from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 interface CommentForm{
 rating:number,
 comment:string
@@ -20,6 +21,7 @@ comment:string
   selector: 'app-search-page',
   standalone: true,
   imports: [
+    MatButtonModule,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
@@ -30,7 +32,23 @@ comment:string
     ReactiveFormsModule
   ],
   templateUrl:"./search-page.component.html",
-  styles: ``
+  styles: `
+  img{
+    width:200px;
+    height:200px;
+}
+
+.item{
+    max-width:500px;
+}
+.container{
+  display:flex;
+  justify-content:center;
+  flex-direction:column;
+  gap:5rem;
+  margin:0 35%
+}
+`
 })
 export class SearchPageComponent {
 constructor(){

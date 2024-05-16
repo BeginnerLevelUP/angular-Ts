@@ -4,10 +4,11 @@ import { Router,RouterModule } from '@angular/router';
 import { User } from '../user';
 import { MatCardModule } from '@angular/material/card';
 import { EcommerceService } from '../ecommerce.service';
+import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'app-favorite',
   standalone: true,
-  imports: [MatCardModule],
+  imports: [MatCardModule,MatButtonModule],
   templateUrl: "./favorite.component.html",
   styles: `.favorite-header {
     display: flex;
@@ -28,6 +29,12 @@ img{
     display:flex;
     justify-content:center;
     flex-direction:column;
+}
+.container{
+  display:flex;
+  flex-direction:column;
+  margin:0 35%;
+  
 }
 `
 })

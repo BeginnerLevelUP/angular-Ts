@@ -9,7 +9,7 @@
     </section>
 
 </article>
-<div class="item">
+<div class="container">
     @for (item of user$().favorite.items; track item.id) {
     
     <mat-card class="item">
@@ -27,8 +27,8 @@
             </p>
         </mat-card-content>
         <mat-card-actions>
-            <button mat-button (click)="cart(item._id)">Add To Cart</button>
-            <button mat-button (click)="removeFavorite(item._id)">Remove From Favortie</button>
+            <button mat-button (click)="cart(item._id)" mat-raised-button color="primary">Add To Cart</button>
+            <button mat-button (click)="removeFavorite(item._id)"  mat-raised-button color="accent">Remove From Favortie</button>
         </mat-card-actions>
     </mat-card>
     } @empty {
