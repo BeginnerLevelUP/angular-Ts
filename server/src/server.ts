@@ -28,7 +28,7 @@ connectToDatabase(ATLAS_URI)
     app.use("/api/", userRouter,auth.authMiddleware);
     app.use("/api/", productRouter);
     // start the Express server
-    app.listen(5200, () => {
+    app.listen(process.env.PORT || 5200, () => {
       console.log(`Server running at http://localhost:5200...`);
     });
   })
