@@ -1,11 +1,11 @@
 import * as dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
-import { connectToDatabase } from "./database";
-import {userRouter} from "./user.routes";
-import { productRouter } from "./product.routes";
-import authRouter from "./auth.routes";
-import auth from "./auth";
+import { connectToDatabase } from "./src/database";
+import {userRouter} from "./src/user.routes";
+import { productRouter } from "./src/product.routes";
+import authRouter from "./src/auth.routes";
+import auth from "./src/auth";
 // Load environment variables from the .env file, where the ATLAS_URI is configured
 dotenv.config();
 
