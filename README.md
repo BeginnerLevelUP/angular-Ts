@@ -20,6 +20,7 @@ Simply Go to the [Deployed Website](https://angular-ts.onrender.com/)
 * Handling State Better ( having to reload to ge the update state)
 * A Better handle of the sytanx 
 * Removing Unecssary code (espcialy imports)
+* The Search Seems to be a bit wonky 
 ## Help
 This was my first time using Angular and my first time using typescript so I'm sure there's alot of way I could have optimized the code but for a first time project I am proud of my abiilty to adapt and create a function full stack apllication 
 
