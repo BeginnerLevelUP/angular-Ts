@@ -6,6 +6,7 @@ import {userRouter} from "./src/user.routes";
 import { productRouter } from "./src/product.routes";
 import authRouter from "./src/auth.routes";
 import auth from "./src/auth";
+import path from 'path';
 // Load environment variables from the .env file, where the ATLAS_URI is configured
 dotenv.config();
 
@@ -28,6 +29,13 @@ connectToDatabase(ATLAS_URI)
     app.use("/api/", userRouter,auth.authMiddleware);
     app.use("/api/", productRouter);
     // start the Express server
+        if (process.env.NODE_ENV === 'production') {
+        app.use(express.static(path.join(__dirname, '../client/dist/test-project/browser')));
+
+        app.get('*', (req, res) => {
+            res.sendFile(path.join(__dirname, '../client/dist/test-project/browser/index.html'));
+        });
+    }
     app.listen(process.env.PORT || 5200, () => {
       console.log(`Server running at http://localhost:5200...`);
     });
