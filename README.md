@@ -1,6 +1,7 @@
 # Ecommerce Store
 Meant to represent an Ecommerce Store where the user can create an account and buy items
-
+## Installing
+Simply Go to the [Deployed Website](https://angular-ts.onrender.com/) 
 ## Features
 * View the Catalog of Items
 * Filter based on catergory or search query
@@ -13,11 +14,12 @@ Meant to represent an Ecommerce Store where the user can create an account and b
 ![Cart](./readMeImages/CartPage.png)
 ![Search](./readMeImages/SearchPage.png)
 ![Favorite](./readMeImages/FavoritePage.png)
-### Installing
-Simply Go to the [Deployed Website]() 
 
 
-
+## Improvments
+* Handling State Better ( having to reload to ge the update state)
+* A Better handle of the sytanx 
+* Removing Unecssary code (espcialy imports)
 ## Help
 This was my first time using Angular and my first time using typescript so I'm sure there's alot of way I could have optimized the code but for a first time project I am proud of my abiilty to adapt and create a function full stack apllication 
 
